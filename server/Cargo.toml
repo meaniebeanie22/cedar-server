@@ -54,9 +54,9 @@ tower-http = { version = "0.4.3", features = ["fs", "cors"] }
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 tracing-appender = "0.2.3"
 memchr = "2.8.0"
-quadrature-encoder = "0.2.1"
 rppal = { version = "0.22.1", features = ["embedded-hal"] }
 nalgebra = "0.35.0"
+quadrature-decoder = "0.2.0"
 
 [lints.clippy]
 await_holding_lock = "warn"
