@@ -1,0 +1,15 @@
+[build]
+default-target = "aarch64-unknown-linux-gnu"
+
+[build.env]
+volumes = ["TELESCOPE_ROOT=/home/Patrick/telescope"]
+
+[target.aarch64-unknown-linux-gnu]
+image = "ghcr.io/cross-rs/aarch64-unknown-linux-gnu:main"
+pre-build = [
+  'dpkg --add-architecture $CROSS_DEB_ARCH',
+  'apt-get update && apt-get install -y --no-install-recommends ca-certificates curl gnupg',
+  'install -d /usr/share/keyrings && curl -fsSL https://archive.raspberrypi.org/debian/raspberrypi.gpg.key | gpg --dearmor -o /usr/share/keyrings/raspberrypi.gpg && echo "deb [arch=$CROSS_DEB_ARCH signed-by=/usr/share/keyrings/raspberrypi.gpg] http://archive.raspberrypi.org/debian/ bookworm main" > /etc/apt/sources.list.d/raspi.list',
+  'printf "Package: *\nPin: origin archive.raspberrypi.org\nPin-Priority: 100\n\nPackage: libcamera* libpisp*\nPin: origin archive.raspberrypi.org\nPin-Priority: 600\n" > /etc/apt/preferences.d/raspi',
+  'apt-get update && apt-get install -y --no-install-recommends build-essential protobuf-compiler cmake nasm clang zstd libdbus-1-dev:$CROSS_DEB_ARCH libjpeg-dev:$CROSS_DEB_ARCH zlib1g-dev:$CROSS_DEB_ARCH libprotobuf-dev:$CROSS_DEB_ARCH libcamera-dev:$CROSS_DEB_ARCH && rm -rf /var/lib/apt/lists/*',
+]
